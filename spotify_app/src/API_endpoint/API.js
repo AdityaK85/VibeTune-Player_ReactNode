@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
 import axios from 'axios';
-import { Header } from '../pages/layout/header';
 
 const BASE_URL = 'http://localhost:8000/api'
 const HEADER = { "Content-Type":"application/json" }
