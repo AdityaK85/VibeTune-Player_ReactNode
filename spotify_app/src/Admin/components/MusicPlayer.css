@@ -1,0 +1,12 @@
+.cover-art {
+  text-align: center;
+}
+
+.cover-art img {
+  width: 100%; /* Make it responsive */
+  max-height: 200px; /* Limit height */
+}
+
+.duration {
+  font-size: 0.9rem; /* Smaller font for duration */
+}
