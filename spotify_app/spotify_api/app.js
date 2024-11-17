@@ -13,13 +13,22 @@ const { Server } = require('http');
 const image_upload = multer({ storage:multer.memoryStorage() });
 const app = express();
 
+
 const corsOptions = {
-  origin: '*', 
+  origin: 'https://vibe-tune-player.vercel.app', // Your frontend domain
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
-
 app.use(cors(corsOptions));
+
+// Preflight Handling
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', 'https://vibe-tune-player.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.sendStatus(200);
+});
+
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/artist_profile', express.static(path.join(__dirname, 'artist_profile')));
