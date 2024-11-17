@@ -3,12 +3,11 @@
     "version": 2,
     "builds": [
       {
-        "src": "spotify_api/app.js",
+        "src": "spotify_app/spotify_api/app.js",
         "use": "@vercel/node"
       }
     ],
     "routes": [
-      { "src": "/(.*)", "dest": "spotify_api/app.js" }
+      { "src": "/(.*)", "dest": "spotify_app/spotify_api/app.js" }
     ]
   }
-  
