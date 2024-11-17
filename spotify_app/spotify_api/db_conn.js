@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-const uri = 'mongodb://localhost:27017/spotify_db';  // Make sure the database name is included here
+const uri = process.env.MONGODB_URL || 'mongodb://localhost:27017/spotify_db';  // Make sure the database name is included here
 
 async function connect() {
     try {
