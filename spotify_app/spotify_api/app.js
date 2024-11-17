@@ -36,6 +36,11 @@ async function runServer() {
 
 runServer();
 
+
+app.get('/', (req, res) => {
+  res.send('Welcome to VIBE TUNE BACKEND!');
+});
+
 // ################################################ CHECK DIR #####################################
 
 const ensureDirectoryExistence = (dir) => {
