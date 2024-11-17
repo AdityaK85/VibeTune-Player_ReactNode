@@ -13,7 +13,13 @@ const { Server } = require('http');
 const image_upload = multer({ storage:multer.memoryStorage() });
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/artist_profile', express.static(path.join(__dirname, 'artist_profile')));
@@ -36,6 +42,7 @@ async function runServer() {
 
 runServer();
 
+app.options('*', cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.send('Welcome to VIBE TUNE BACKEND!');
