@@ -2,16 +2,13 @@
     "installCommand": "npm install --legacy-peer-deps",
     "version": 2,
     "builds": [
-        {
-        "src": "app.js",
+      {
+        "src": "spotify_api/app.js",
         "use": "@vercel/node"
-        },
-        {
-        "src": "src/**/*",
-        "use": "@vercel/static"
-        }
+      }
     ],
     "routes": [
-        { "src": "/(.*)", "dest": "/" }
+      { "src": "/(.*)", "dest": "spotify_api/app.js" }
     ]
-}
+  }
+  
