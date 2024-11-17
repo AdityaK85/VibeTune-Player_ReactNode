@@ -13,18 +13,7 @@ const { Server } = require('http');
 const image_upload = multer({ storage:multer.memoryStorage() });
 const app = express();
 
-
-// CORS options
-const corsOptions = {
-  origin: ['https://vibe-tune-player.vercel.app'], // Allowed frontend domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-  credentials: true, // Include credentials (e.g., cookies or authorization headers)
-};
-
-// Apply CORS middleware
-app.use(cors(corsOptions));
-
+app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/artist_profile', express.static(path.join(__dirname, 'artist_profile')));
@@ -47,7 +36,7 @@ async function runServer() {
 
 runServer();
 
-app.options('*', cors(corsOptions));
+
 
 app.get('/', (req, res) => {
   res.send('Welcome to VIBE TUNE BACKEND!');
