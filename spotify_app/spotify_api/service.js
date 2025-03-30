@@ -16,6 +16,14 @@ exports.getAudioById = async (id) => {
     return await modal.AudioModal.findById(id);
 };
 
+exports.getAudioByMusicType = async (type) => {
+    let query = {};
+    if (type)  query.musicType = type;
+    let result = await modal.AudioModal.find(query);
+    if (result.length === 0) result = await modal.AudioModal.find();
+    return result;
+};
+
 exports.updateAudio = async (id, audio) => {
     return await modal.AudioModal.findByIdAndUpdate(id, audio, { new: true });
 };
@@ -55,3 +63,26 @@ exports.getArtist = async (id = null) => {
     if (id) { return await modal.ArtistModal.findById(id) }
     return await modal.ArtistModal.find()
 }
+
+
+//  +++++++++++++++++++++++++++++++ADMIN LOGIN MODAL++++++++++++++++++++++++++++++++++++++++
+
+exports.getAdmin = async (email, password) => {
+    let query = {};
+    query.email = email;
+    query.password = password;
+    return await modal.AdminLoginModal.find(query) 
+}
+
+
+//  +++++++++++++++++++++++++++++++USER LOGIN MODAL++++++++++++++++++++++++++++++++++++++++
+
+exports.createUser = async (userDetails) => {
+    return await modal.UserLoginModal.create(userDetails);
+}
+
+exports.getUser = async (email, password) => {
+    const user = await modal.UserLoginModal.findOne({ email, password });
+    if (!user) return null
+    return user;
+};

@@ -7,6 +7,7 @@ export const NewMusic = () => {
     const [artist_profile_id, setartist_profile_id] = useState(null)
     const [musicName, setmusicName] = useState(null)
     const [musicFile, setMusicFile] = useState(null)
+    const [musicType, setMusicType] = useState(null)
     const [ artistProfileList, setArtistProfileList ] = useState([]);
     const location = useLocation();
     const { update_audio_data , is_update } = location.state || {}
@@ -25,6 +26,7 @@ export const NewMusic = () => {
             var formdata = new FormData();
             formdata.append('fk_artish_id', artist_profile_id)
             formdata.append('music_name' , musicName)
+            formdata.append('music_type' , musicType)
             formdata.append('music_file' , musicFile)
             try {
                 const response = await Spotify_API.saveNewMusic(formdata);
@@ -84,6 +86,21 @@ export const NewMusic = () => {
                                             <option key={index} value={ele._id} selected={ele._id === update_audio_data?.fk_artish_id} >{ele.artist_name}</option>
                                         ))
                                     }
+                                </select>
+                            </div>
+                        </div>
+                        <div className='form-group mb-4' >
+                            <label className='form-lable mb-3' >Music Type</label>
+                            <div className='d-flex'>
+                                <select className='form-select' onChange={(e)=>{setMusicType(e.target.value)}} >
+                                    <option value="Happy" >Happy</option>
+                                    <option value="Neutral" >Neutral</option>
+                                    <option value="Sad" >Sad</option>
+                                    <option value="Fearful" >Fearful</option>
+                                    <option value="Angry" >Angry</option>
+                                    <option value="Disgusted" >Disgusted</option>
+                                    <option value="Surprised" >Surprised</option>
+
                                 </select>
                             </div>
                         </div>

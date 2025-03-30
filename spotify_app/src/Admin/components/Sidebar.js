@@ -14,9 +14,6 @@ export const Sidebar = () => {
                     <span>Menu</span>
                 </div>
             </div>
-            <div className="navbar-nav w-100">
-                <Link to="home" id='dashboard-menu' className="nav-item  nav-link"><i className="fa fa-tachometer-alt me-2"></i>Dashboard</Link>
-            </div>
             <div className="navbar-nav mt-1 w-100">
                 <Link to="add-artist" id='artist-menu' className="nav-item  nav-link"><i className="fa fa-tachometer-alt me-2"></i>Add Artist</Link>
             </div>

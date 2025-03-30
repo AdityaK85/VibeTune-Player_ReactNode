@@ -3,10 +3,21 @@ import { Spotify_API } from '../../API_endpoint/API'
 import { MusicPlayerContext } from '../components/MusicPlayerContext';
 import { Link } from 'react-router-dom'
 import '../components/header.css'
-
-
+import { useNavigate } from 'react-router-dom'
 
 export const Header = () => {
+
+  const navigate = useNavigate();
+
+
+    useEffect(() => {
+      const checkLog = sessionStorage.getItem("isUserLogin");
+      console.log("Session Value:", checkLog);
+  
+      if (checkLog === "false" || !checkLog) {
+        navigate("/login");
+      }
+    }, [navigate]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredResults, setFilteredResults] = useState([]);
@@ -73,10 +84,32 @@ export const Header = () => {
             ><span style={{color:'#ef5245 !important'}} >Vibe</span>
             Tune
             </a>
+            
 
             {/* Home Button */}
-            <div style={{display:'flex', width:'40%'}} >
+            <div style={{display:'flex', width:'50%'}} >
+
+            <Link
+                  to="/face-recommedation"
+                  title="Home"
+                  aria-label="Home"
+                  className="d-flex align-items-center justify-content-center mx-3"
+                  style={{
+                    height: '50px',
+                    padding:'15px',
+                    borderRadius:'50px',
+                    color:'white',
+                    background: 'linear-gradient(135deg, #ff8a00, #e52e71)',
+                    boxShadow: '0 0 15px rgba(255, 102, 204, 0.7)',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.2)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                >
+                  Face Recommedation
+                </Link>
               
+                
                 <Link
                   to="/"
                   title="Home"
@@ -151,6 +184,25 @@ export const Header = () => {
                     </ul>
                   )}
                 </div>
+
+                <Link
+                  to="/login"
+                  title="Logout"
+                  aria-label="Logout"
+                  className="d-flex align-items-center justify-content-center mx-3"
+                  style={{
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #ff8a00, #e52e71)',
+                    boxShadow: '0 0 15px rgba(255, 102, 204, 0.7)',
+                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.2)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                >
+                 <i className="fa-solid fa-right-from-bracket text-white" title="Logout"></i>
+                </Link>
             </div>
           </div>
         </nav>

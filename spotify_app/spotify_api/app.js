@@ -136,13 +136,15 @@ const storage = multer.diskStorage({
 
 const upload_file = multer({ storage });
 app.post("/api/save_new_music", upload_file.single("music_file"), async (req, res) => {
-  const { fk_artish_id, music_name } = req.body;
+  const { fk_artish_id, music_name , music_type } = req.body;
+  console.log(music_name ,music_type )
   const musicFile = req.file;
   if (!musicFile ) {
     return res.status(400).json({ message: "Error in uploading audio file" });
   }
   const newAudio = {
     name: music_name,
+    musicType: music_type,
     filePath: musicFile.path,
     fk_artish_id: new mongoose.Types.ObjectId(fk_artish_id),
     file_mime_type: musicFile.mimetype,
@@ -169,6 +171,7 @@ app.post("/api/music_list", async (req, res) => {
       const artist  = await service.getArtist(music.fk_artish_id) ;
       const response_dict = {
         ...music.toObject(),
+        musicType : music.musicType ,
         audio_file : `${MEDIA_BASEURL}/${music.filePath.replace(/\\/g, '/')}`,
         artist_id : artist ? artist._id : null,
         artist_name : artist ? artist.artist_name : 'Unknown Artist',
@@ -199,6 +202,26 @@ app.post("/api/get_audio_by_id" , async (req, res) => {
   return res.status(200).json({'payload': return_dict})
 } )
 
+
+// get_audio_list_by_face_type 
+app.post("/api/get_audio_list_by_face_type", async (req, res) => {
+  try {
+      const { musicType } = req.body;
+      if (!musicType)  return res.status(400).json({ error: "musicType is required" });
+      const audioDetails = await service.getAudioByMusicType(musicType);
+      if (audioDetails.length === 0)  return res.status(404).json({ error: "No audio found" });
+      const formattedAudioList = audioDetails.map(audio => ({
+          ...audio.toObject(),
+          audio_file: `${MEDIA_BASEURL}/${audio.filePath.replace(/\\/g, '/')}`
+      }));
+      return res.status(200).json({ payload: formattedAudioList });
+  } catch (error) {
+      console.error("Error fetching audio list:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 // Get audio list by artist ID 
 app.post("/api/get_audio_list_by_artist_id" , async (req, res) => {
   const { artist_id } = req.body;
@@ -217,6 +240,7 @@ app.post("/api/get_audio_list_by_artist_id" , async (req, res) => {
       const response_dict = {
         ...music.toObject(),
         audio_file : `${MEDIA_BASEURL}/${music.filePath.replace(/\\/g, '/')}`,
+        music_type : music.musicType ,
         artist_id : artist ? artist._id : null,
         artist_name : artist ? artist.artist_name : 'Unknown Artist',
         artist_image :  `${MEDIA_BASEURL}/${artist.profile_image.replace(/\\/g, '/')}`, 
@@ -231,3 +255,41 @@ app.post("/api/get_audio_list_by_artist_id" , async (req, res) => {
   };0
   return res.status(200).json({'payload': final_response})
 } )
+
+
+// Login API
+app.post("/api/admin_login" , async (req, res) => {
+  const { email, password } = req.body;
+  const adminDetail = await service.getAdmin(email , password);
+  console.log( 'admin details', adminDetail , adminDetail.length)
+  if (!adminDetail || adminDetail.length === 0)  return res.status(403).json({'payload': {'msg': "Invalid Credentials"}})  
+  else return res.status(200).json({'payload': {'msg':"Login Successfully" }})
+} )
+
+
+// User Signup API
+app.post("/api/user_signup", async (req, res) => {
+  const { email, password } = req.body;
+  const data_dict = { email: email, password : password };
+  try {
+    await service.createUser(data_dict); 
+    return res.status(200).json({ message: "Registered Successfully" });
+  } catch (error) {
+    console.error('Error saving audio:', error);
+    return res.status(500).json({ message: "Something Went Wrong", error });
+  }
+} )
+
+// User Login API
+app.post("/api/user_login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await service.getUser(email, password);
+    if (user != null )  return res.status(200).json({ message: "Login Successfully" });
+    else return res.status(500).json({ message: "Invalid Credentials" });
+  } catch (error) {
+    console.error('Error saving audio:', error);
+    return res.status(500).json({ message: "Something Went Wrong", error });
+  }
+} )
+

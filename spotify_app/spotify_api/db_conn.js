@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-console.log('----------MONGO DB-URL------', process.env.MONGODB_URL)
+// console.log('----------MONGO DB-URL------', process.env.MONGODB_URL)
 
-const uri = process.env.MONGODB_URL || 'mongodb://localhost:27017/spotify_db';  // Make sure the database name is included here
-
+const uri = 'mongodb://localhost:27017/spotify_db';  // Make sure the database name is included here
+console.log('----------ACCESS DB------', uri)
 async function connect() {
     try {
         await mongoose.connect(uri, {

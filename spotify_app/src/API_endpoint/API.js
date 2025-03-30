@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+console.log('------------REACT BASE BACKEND URL----------', process.env.REACT_APP_BASE_URL)
 const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000/api'
 const HEADER = { "Content-Type":"application/json" }
 
@@ -101,6 +101,42 @@ export const Spotify_API = {
             data : data
         }
         return await axios(axiosConfig)
-    }
+    },
+    getMusiclistbyFaceType: async (data) => {
+        var axiosConfig =  {
+            method : "post",
+            url : `${BASE_URL}/get_audio_list_by_face_type`,
+            header : HEADER,
+            data : data
+        }
+        return await axios(axiosConfig)
+    },
+    adminLogin: async (data) => {
+        var axiosConfig =  {
+            method : "post",
+            url : `${BASE_URL}/admin_login`,
+            header : HEADER,
+            data : data
+        }
+        return await axios(axiosConfig)
+    },
+    UserSignup: async (data) => {
+        var axiosConfig =  {
+            method : "post",
+            url : `${BASE_URL}/user_signup`,
+            header : HEADER,
+            data : data
+        }
+        return await axios(axiosConfig)
+    },
+    UserLogin: async (data) => {
+        var axiosConfig =  {
+            method : "post",
+            url : `${BASE_URL}/user_login`,
+            header : HEADER,
+            data : data
+        }
+        return await axios(axiosConfig)
+    },
     
 }

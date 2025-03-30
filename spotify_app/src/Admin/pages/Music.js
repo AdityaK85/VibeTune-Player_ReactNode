@@ -19,6 +19,7 @@ export const Music = () => {
             var response = await Spotify_API.getMusicList();
             if (response.status === 200) {
                 var response_list = response.data.payload
+                console.log(response_list)
                 setMusicList(Array.isArray(response_list) ? response_list : [] )
             }
             else {
@@ -111,6 +112,7 @@ export const Music = () => {
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Music Name</th>
+                                <th scope="col">Type</th>
                                 <th scope="col">Play</th>
                                 <th scope="col">Artist</th>
                                 <th scope="col" style={{textAlign:"end"}} >Actions</th>
@@ -122,6 +124,7 @@ export const Music = () => {
                                     <tr>
                                         <th scope="row">{index + 1}</th>
                                         <td>{ele.name}</td>
+                                        <td>{ele.musicType ? ele.musicType : '--' }</td>
                                         <td  ><button onClick={(e)=>{openAudioModal(ele.audio_file)} } className='btn btn-info btn-sm rounded-0' ><i className="fa-solid fa-play"></i></button> </td>
                                         <td>{ele.artist_name}</td>
                                         <td style={{display:"flex", justifyContent: "end"}} >
